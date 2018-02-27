@@ -1,0 +1,31 @@
+swagger: '2.0'
+info: 
+  title: 'Reservations App'
+  version: '0.1'
+host: 'localhost:5000'
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /cinemas:
+    get:
+      tags:
+        - cinemas
+      description: Retrieves all existing cinemas
+      operationId: cinemas
+      produces: [ application/json ]
+      responses:
+        200:
+          description: Contains details of all cinemas
+          schema:
+            items: 
+              $ref: '#/definitions/cinemas'
+        400:
+          description: "Invalid request"
+              
+definitions:
+  cinemas:
+    type: array
+    properties:
+      type: string
