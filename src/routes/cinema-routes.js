@@ -1,35 +1,33 @@
-const ObjectID = require('mongodb').ObjectID;
-const cinemaRepository = require('../data-access/cinema-repository');
+const CinemaRepository = require('../data-access/cinema-repository');
 
-const cinemas = (app, db) => {
+const routes = (app, collection) => {
   app.get('/cinemas', (req, res) => {
-    cinemaRepository.getCinemas(db)
+    CinemaRepository.getCinemas(collection)
       .then(cinemas => {
-        res.send(cinemas)
+        res.send(cinemas);
       })
       .catch(err => {
-        res.send(`There was an error: ${err}`)
-      })
-  })
+        res.send(`There was an error: ${err}`);
+      });
+  });
 
   app.get('/cinemas/:id', (req, res) => {
-    cinemaRepository.getCinema(req.params.id, db)
+    CinemaRepository.getCinema(req.params.id, collection)
       .then(cinema => {
         res.send(cinema);
       })
       .catch(err => {
         res.send(err);
-      })
-    
+      });
   });
 
   app.post('/cinemas', (req, res) => {
-    cinemaRepository.addCinema(req.body.name, req.body.description, db)
+    CinemaRepository.addCinema(req.body.name, req.body.description, collection)
       .then(response => {
-        res.send(response)
+        res.send(response);
       })
-      .catch(err => {console.error(`There was an error: ${err}`)})
+      .catch(err => { res.send(`There was an error: ${err}`); });
   });
-}
+};
 
-module.exports = cinemas;
+module.exports = routes;

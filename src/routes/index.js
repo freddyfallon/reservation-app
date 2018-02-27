@@ -1,5 +1,5 @@
-const cinemas = require('./cinema-routes');
+const routes = require('./cinema-routes');
 
-module.exports = (app, db) => {
-  cinemas(app, db);
+module.exports = (app, collection) => {
+  routes(app, collection);
 };
