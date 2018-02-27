@@ -1,6 +1,17 @@
 const ObjectID = require('mongodb').ObjectID;
 
 const cinemas = (app, db) => {
+  app.get('/cinemas', (req, res) => {
+    db.collection('cinemas').find().toArray((err, items) => {
+      if (err) {
+        console.error(err);
+        res.send({'error': 'An error has occured'})
+      } else {
+        res.send(items);
+      }
+    })
+  })
+
   app.get('/cinemas/:id', (req, res) => {
     const id = req.params.id;
     const details = {'_id': new ObjectID(id)};
@@ -9,7 +20,6 @@ const cinemas = (app, db) => {
         console.error(err);
         res.send({'error': 'An error has occured'})
       } else {
-        console.log('🍍', item)
         res.send(item);
     }
     });
