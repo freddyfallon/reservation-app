@@ -19,13 +19,20 @@ paths:
         200:
           description: Contains details of all cinemas
           schema:
+            type: array
             items: 
-              $ref: '#/definitions/cinemas'
+              $ref: '#/definitions/Cinema'
         400:
           description: "Invalid request"
               
 definitions:
-  cinemas:
-    type: array
+  Cinema:
+    type: object
     properties:
-      type: string
+      name:
+        type: string
+      description:
+        type: string
+    required:
+      - name
+      - description
