@@ -1,39 +1,34 @@
 const ObjectID = require('mongodb').ObjectID;
+const cinemaRepository = require('../data-access/cinema-repository');
 
 const cinemas = (app, db) => {
   app.get('/cinemas', (req, res) => {
-    db.collection('cinemas').find().toArray((err, items) => {
-      if (err) {
-        console.error(err);
-        res.send({'error': 'An error has occured'})
-      } else {
-        res.send(items);
-      }
-    })
+    cinemaRepository.getCinemas(db)
+      .then(cinemas => {
+        res.send(cinemas)
+      })
+      .catch(err => {
+        res.send(`There was an error: ${err}`)
+      })
   })
 
   app.get('/cinemas/:id', (req, res) => {
-    const id = req.params.id;
-    const details = {'_id': new ObjectID(id)};
-    db.collection('cinemas').findOne(details, (err, item) => {
-      if (err) {
-        console.error(err);
-        res.send({'error': 'An error has occured'})
-      } else {
-        res.send(item);
-    }
-    });
+    cinemaRepository.getCinema(req.params.id, db)
+      .then(cinema => {
+        res.send(cinema);
+      })
+      .catch(err => {
+        res.send(err);
+      })
+    
   });
 
   app.post('/cinemas', (req, res) => {
-    const cinema = { name: req.body.name, description: req.body.description };
-    db.collection('cinemas').insert(cinema, (err, result) => {
-      if (err) { 
-        res.send({ 'error': 'An error has occurred' }); 
-      } else {
-        res.send(`${result.ops[0].name} successfully added`);
-      }
-    });
+    cinemaRepository.addCinema(req.body.name, req.body.description, db)
+      .then(response => {
+        res.send(response)
+      })
+      .catch(err => {console.error(`There was an error: ${err}`)})
   });
 }
 

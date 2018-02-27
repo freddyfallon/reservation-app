@@ -16,6 +16,7 @@ MongoClient.connect(db.url, (err, database) => {
   }
 
   const db = database.db('reservations');
+  
   require('./src/routes/index')(app, db);
 
   app.listen(port, () => {
